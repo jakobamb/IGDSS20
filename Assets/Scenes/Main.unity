@@ -955,6 +955,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c4fb070738f3544ea560ef08186d72d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scrollSensitivity: 10
+  panSensitivity: 0.3
+  camera: {fileID: 512232609}
+  gameManager: {fileID: 1768092941}
 --- !u!4 &834136087
 Transform:
   m_ObjectHideFlags: 0
