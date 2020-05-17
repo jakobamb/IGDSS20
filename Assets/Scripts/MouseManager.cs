@@ -9,6 +9,8 @@ public class MouseManager : MonoBehaviour
     public Camera camera; 
     private Vector3 startPos = new Vector3(0,0,0);
 
+    public GameManager gameManager;
+
     void Zooming(){
         if(Input.GetAxis("Mouse ScrollWheel") < 0f){
             if(camera.transform.position[1]<120){
@@ -29,7 +31,17 @@ public class MouseManager : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             Vector3 delta = Input.mousePosition - startPos;
-            camera.transform.Translate(delta.y * panSensitivity, 0, -delta.x * panSensitivity, Space.World);
+            Vector3 translateVector = new Vector3(delta.y * panSensitivity, 0, -delta.x * panSensitivity);
+            Vector3 newPosition = camera.transform.position + translateVector;
+            Vector2 mapBounds = gameManager.getMapBounds();
+            
+            if(newPosition.x >= mapBounds[0] && newPosition.z >= mapBounds[0] && 
+                newPosition.x <= mapBounds[1] && newPosition.z <= mapBounds[1])
+            {
+                // check for limits
+                camera.transform.Translate(delta.y * panSensitivity, 0, -delta.x * panSensitivity, Space.World);
+            }
+
             startPos = Input.mousePosition;
         }
     }

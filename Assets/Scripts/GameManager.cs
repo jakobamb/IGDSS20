@@ -15,8 +15,6 @@ public class GameManager : MonoBehaviour
 
     public float heightmapSteepness;
 
-    private float[] POSSIBLE_TILE_ROTATIONS = {0, 60, 120};
-
     GameObject spawnTile(Vector3 pos, float hmapVal) 
     {
         float height = pos[1];
@@ -34,6 +32,10 @@ public class GameManager : MonoBehaviour
         } else {
             return Instantiate(Helpers.randomListSelect(tilesMountain), pos, rotation);
         }
+    }
+
+    public Vector2 getMapBounds() {
+        return new Vector2(0f, heightmap.width * 12f);
     }
 
     // Start is called before the first frame update
