@@ -4,28 +4,34 @@ using UnityEngine;
 
 public class MouseManager : MonoBehaviour
 {
-    public float speed = 10.0f;
+    public float scrollSensitivity = 10.0f;
+    public float panSensitivity = 3f;
     public Camera camera; 
+    private Vector3 startPos = new Vector3(0,0,0);
 
     void Zooming(){
 
         if(Input.GetAxis("Mouse ScrollWheel") < 0){
             if(camera.transform.position[0]<100){
-                camera.transform.Translate(0,0,Input.GetAxis("Mouse ScrollWheel") * speed);
+                camera.transform.Translate(0,0,Input.GetAxis("Mouse ScrollWheel") * scrollSensitivity);
             }
         }
         else if(Input.GetAxis("Mouse ScrollWheel") > 0){
             if(camera.transform.position[0]>20){
-                camera.transform.Translate(0,0,Input.GetAxis("Mouse ScrollWheel") * speed);
+                camera.transform.Translate(0,0,Input.GetAxis("Mouse ScrollWheel") * scrollSensitivity);
             }
         }
     }
 
     void Panning(){
-        if (Input.GetMouseButton(1)){
-
-            camera.transform.Rotate(-Input.GetAxis("Mouse X"),0,0,Space.World);
-            camera.transform.Rotate(0,0,-Input.GetAxis("Mouse Y"),Space.World);
+        if (Input.GetMouseButtonDown(1)){
+            startPos = Input.mousePosition;
+        }
+        if (Input.GetMouseButton(1))
+        {
+            Vector3 delta = Input.mousePosition - startPos;
+            camera.transform.Translate(delta.y * panSensitivity, 0, -delta.x * panSensitivity, Space.World);
+            startPos = Input.mousePosition;
         }
     }
 
