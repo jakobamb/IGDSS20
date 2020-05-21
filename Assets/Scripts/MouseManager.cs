@@ -33,7 +33,7 @@ public class MouseManager : MonoBehaviour
             Vector3 delta = Input.mousePosition - startPos;
             Vector3 translateVector = new Vector3(delta.y * panSensitivity, 0, -delta.x * panSensitivity);
             Vector3 newPosition = camera.transform.position + translateVector;
-            Vector2 mapBounds = gameManager.getMapBounds();
+            Vector2 mapBounds = gameManager.mapGenerator.getMapBounds();
             
             if(newPosition.x >= mapBounds[0] && newPosition.z >= mapBounds[0] && 
                 newPosition.x <= mapBounds[1] && newPosition.z <= mapBounds[1])
