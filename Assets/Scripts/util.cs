@@ -17,4 +17,25 @@ public class Helpers
             return list[idx];
         }
     }
+
+    public static List<T> GetNeighbours<T>(T[,] array2d, int i, int j)
+    {
+        List<T> neighbours = new List<T>();
+        int row_limit = array2d.GetLength(0);
+        int column_limit = array2d.GetLength(1);
+        if (row_limit > 0)
+            {
+                for (int x = System.Math.Max(0, i-1); x <= System.Math.Min(i+1, row_limit); x++)
+                {
+                    for (int y = System.Math.Max(0, j-1); y <= System.Math.Min(j+1, column_limit); y++)
+                    {
+                        if (x != i || y != j)
+                        {
+                            neighbours.Add(array2d[x, y]);
+                        }
+                }
+            }
+        }
+        return neighbours;
+    }
 }

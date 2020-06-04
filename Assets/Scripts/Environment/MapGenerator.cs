@@ -36,7 +36,13 @@ public class MapGenerator : MonoBehaviour
         return (Tile)newTile.GetComponent("Tile");
     }
 
-    public Vector2 getMapBounds() {
+    private void generateNeighbours(int x, int y)
+    {
+
+    }
+
+    public Vector2 getMapBounds()
+    {
         return new Vector2(0f, heightmap.width * 12f);
     }
 
@@ -54,6 +60,15 @@ public class MapGenerator : MonoBehaviour
                 Vector3 tilePos = new Vector3(x * 8.66f, tileHeight, tile_offset + z * 10);
                 Tile newTile = spawnTile(tilePos, heightmap_value);
                 tileMap[x, z] = newTile;
+            }
+        }
+
+        // generate and store neighbouring tiles
+        for (int x = 0; x < tileMap.GetLength(0); x++)
+        {
+            for (int y = 0; y < tileMap.GetLength(1); y++)
+            {
+                tileMap[x, y]._neighborTiles = Helpers.GetNeighbours(tileMap, x, y);
             }
         }
 
