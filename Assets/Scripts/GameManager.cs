@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         PopulateResourceDictionary();
+        _tileMap = mapGenerator.generateMap();
     }
 
     // Update is called once per frame

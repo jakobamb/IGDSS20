@@ -1,44 +1,49 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Tilemaps;
 
 public class MapGenerator : MonoBehaviour
 {
     public Texture2D heightmap;
-    public List<GameObject> tilesForest;
-    public List<GameObject> tilesGrass;
-    public List<GameObject> tilesSand;
-    public List<GameObject> tilesMountain;
-    public List<GameObject> tilesStone;
-    public List<GameObject> tilesWater;
+    public List<Tile> tilesForest;
+    public List<Tile> tilesGrass;
+    public List<Tile> tilesSand;
+    public List<Tile> tilesMountain;
+    public List<Tile> tilesStone;
+    public List<Tile> tilesWater;
 
     public float heightmapSteepness;
 
-    private GameObject spawnTile(Vector3 pos, float hmapVal) 
+    private Tile spawnTile(Vector3 pos, float hmapVal) 
     {
         float height = pos[1];
         Quaternion rotation = Quaternion.AngleAxis(60 * Random.Range(0, 6), Vector3.up);
+        Tile selectedTile;
         if (hmapVal == 0) {
-            return Instantiate(Helpers.randomListSelect(tilesWater), pos, rotation);
+            selectedTile = Helpers.RandomListSelect(tilesWater);
         } else if (hmapVal <= 0.2) {
-            return Instantiate(Helpers.randomListSelect(tilesSand), pos, rotation);
+            selectedTile = Helpers.RandomListSelect(tilesSand);
         } else if (hmapVal <= 0.4) {
-            return Instantiate(Helpers.randomListSelect(tilesGrass), pos, rotation);
+            selectedTile = Helpers.RandomListSelect(tilesGrass);
         } else if (hmapVal <= 0.6) {
-            return Instantiate(Helpers.randomListSelect(tilesForest), pos, rotation);
+            selectedTile = Helpers.RandomListSelect(tilesForest);
         } else if (hmapVal <= 0.8) {
-            return Instantiate(Helpers.randomListSelect(tilesStone), pos, rotation);
+            selectedTile = Helpers.RandomListSelect(tilesStone);
         } else {
-            return Instantiate(Helpers.randomListSelect(tilesMountain), pos, rotation);
+            selectedTile = Helpers.RandomListSelect(tilesMountain);
         }
+        GameObject newTile = Instantiate(selectedTile.gameObject, pos, rotation);
+        return (Tile)newTile.GetComponent("Tile");
     }
 
     public Vector2 getMapBounds() {
         return new Vector2(0f, heightmap.width * 12f);
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public Tile[,] generateMap()
     {
+        Tile[,] tileMap = new Tile[heightmap.height, heightmap.width];
+
         // iterate through the heightmap pixels
         for (int x = 0; x < heightmap.height; x++) {
             for (int z = 0; z < heightmap.width; z++) {
@@ -47,10 +52,12 @@ public class MapGenerator : MonoBehaviour
                 float heightmap_value = heightmap.GetPixel(z, x).grayscale;
                 float tileHeight = heightmap_value * heightmapSteepness;
                 Vector3 tilePos = new Vector3(x * 8.66f, tileHeight, tile_offset + z * 10);
-                spawnTile(tilePos, heightmap_value);
+                Tile newTile = spawnTile(tilePos, heightmap_value);
+                tileMap[x, z] = newTile;
             }
         }
 
+        return tileMap;
     }
 
     // Update is called once per frame
