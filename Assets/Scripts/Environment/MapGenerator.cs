@@ -33,7 +33,7 @@ public class MapGenerator : MonoBehaviour
             selectedTile = Helpers.RandomListSelect(tilesMountain);
         }
         GameObject newTile = Instantiate(selectedTile.gameObject, pos, rotation);
-        return (Tile)newTile.GetComponent("Tile");
+        return newTile.GetComponent<Tile>();
     }
 
     private void generateNeighbours(int x, int y)
@@ -68,7 +68,7 @@ public class MapGenerator : MonoBehaviour
         {
             for (int y = 0; y < tileMap.GetLength(1); y++)
             {
-                tileMap[x, y]._neighborTiles = Helpers.GetNeighbours(tileMap, x, y);
+                tileMap[x, y]._neighborTiles = Helpers.GetPentagonNeighbours(tileMap, x, y);
             }
         }
 

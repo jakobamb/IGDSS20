@@ -46,16 +46,23 @@ public class MouseManager : MonoBehaviour
         }
     }
 
-    void getInfo(){
+    void clickHandler() 
+    {
         if (Input.GetMouseButtonDown(0)){
 
             RaycastHit hit;
             Ray ray = playerCam.ScreenPointToRay(Input.mousePosition);
         
             if (Physics.Raycast(ray, out hit)) {
-                Transform objectHit = hit.transform;
+
+                GameObject hitGameObj = hit.transform.gameObject;
+                Tile hitTile = hitGameObj.GetComponent<Tile>();
+
+                if (hitTile != null) {
+                    Debug.Log("Tile clicked");
+                }
                 
-                Debug.Log(objectHit);
+                Debug.Log(hitGameObj);
             }
         }
     }
@@ -65,7 +72,7 @@ public class MouseManager : MonoBehaviour
     {
         Zooming();
         Panning();
-        getInfo();
+        clickHandler();
 
     }
 }
