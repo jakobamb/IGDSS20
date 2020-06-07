@@ -156,11 +156,7 @@ public class GameManager : MonoBehaviour
     //Returns a list of all neighbors of a given tile
     private List<Tile> FindNeighborsOfTile(Tile t)
     {
-        List<Tile> result = new List<Tile>();
-
-        //TODO: put all neighbors in the result list
-
-        return result;
+        return t._neighborTiles;
     }
     #endregion
 }
