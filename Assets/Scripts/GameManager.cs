@@ -147,9 +147,12 @@ public class GameManager : MonoBehaviour
     {
         //if there is building prefab for the number input
         if (_selectedBuildingPrefabIndex < _buildingPrefabs.Length)
-        {
-            //TODO: check if building can be placed and then istantiate it
-
+        {/*
+            if(_buildingPrefabs[_selectedBuildingPrefabIndex].GetComponent(Building.CanBeBuiltOnTile(t))){
+                //check if resources are available
+                //Instatiate Building with corresponding Prefabindex
+            }
+        */
         }
     }
 
