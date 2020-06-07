@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     #region Buildings
     public GameObject[] _buildingPrefabs; //References to the building prefabs
     public int _selectedBuildingPrefabIndex = 0; //The current index used for choosing a prefab to spawn from the _buildingPrefabs list
+    private List<Building> _activeBuildings = new List<Building>();
     #endregion
 
 
@@ -34,6 +35,16 @@ public class GameManager : MonoBehaviour
     private float _ResourcesInWarehouse_Potato;
     [SerializeField]
     private float _ResourcesInWarehouse_Schnapps;
+    [SerializeField]
+    private float _money;
+
+    [SerializeField]
+    private float _moneyIncome = 100;
+
+    private float _econTickTimer = 0;
+    public const float _ECON_TICK_INTERVAL = 5;
+
+
     #endregion
 
     #region Enumerations
@@ -46,6 +57,7 @@ public class GameManager : MonoBehaviour
     {
         PopulateResourceDictionary();
         _tileMap = mapGenerator.generateMap();
+        _econTickTimer = 0;
     }
 
     // Update is called once per frame
@@ -53,6 +65,14 @@ public class GameManager : MonoBehaviour
     {
         HandleKeyboardInput();
         UpdateInspectorNumbersForResources();
+
+        _econTickTimer += Time.deltaTime;
+
+        if (_econTickTimer >= _ECON_TICK_INTERVAL)
+        {
+            _econTickTimer = 0;
+            handleEconomyTick();
+        }
     }
     #endregion
 
@@ -127,18 +147,45 @@ public class GameManager : MonoBehaviour
         _ResourcesInWarehouse_Schnapps = _resourcesInWarehouse[ResourceTypes.Schnapps];
     }
 
+    private void handleEconomyTick()
+    {
+        // add constant amount of money each tick
+        _money += _moneyIncome;
+
+        // collect upkeep costs from each building
+        foreach (Building b in _activeBuildings)
+        {
+            _money -= b._upkeep;
+        }
+    }
+
     //Checks if there is at least one material for the queried resource type in the warehouse
     public bool HasResourceInWarehoues(ResourceTypes resource)
     {
         return _resourcesInWarehouse[resource] >= 1;
     }
 
+    public void putResourceInWarehouse(ResourceTypes resource, int amount)
+    {
+        if (amount < 0)
+        {
+            return;
+        }
+        _resourcesInWarehouse[resource] += amount;
+    }
+    public void removeResourceFromWarehouse(ResourceTypes resource, int amount)
+    {
+        if (amount < 0)
+        {
+            return;
+        }
+        _resourcesInWarehouse[resource] -= amount;
+    }
+
     //Is called by MouseManager when a tile was clicked
     //Forwards the tile to the method for spawning buildings
-    public void TileClicked(int height, int width)
+    public void TileClicked(Tile t)
     {
-        Tile t = _tileMap[height, width];
-
         PlaceBuildingOnTile(t);
     }
 
@@ -147,12 +194,38 @@ public class GameManager : MonoBehaviour
     {
         //if there is building prefab for the number input
         if (_selectedBuildingPrefabIndex < _buildingPrefabs.Length)
-        {/*
-            if(_buildingPrefabs[_selectedBuildingPrefabIndex].GetComponent(Building.CanBeBuiltOnTile(t))){
-                //check if resources are available
-                //Instatiate Building with corresponding Prefabindex
+        {
+            Building b = _buildingPrefabs[_selectedBuildingPrefabIndex].GetComponent<Building>();
+
+            //check if resources are available
+            if (_resourcesInWarehouse[ResourceTypes.Planks] < b._buildCostPlanks)
+            {
+                Debug.Log("Not enough resources!");
+                return;
+            } 
+            else if (_money < b._buildCostMoney) 
+            {
+                Debug.Log("Not enough money!");
+                return;
             }
-        */
+            else if (!b.CanBeBuiltOnTile(t))
+            {
+                Debug.Log("Can't build on this tile!");
+                return;
+            }
+            else
+            {
+                // remove resources
+                _money -= b._buildCostMoney;
+                removeResourceFromWarehouse(ResourceTypes.Planks, b._buildCostPlanks);
+                // instantiate and place
+                GameObject instance = Instantiate(b.gameObject, t.transform.position, t.transform.rotation);
+                // set parent tile
+                Building newBuilding = instance.GetComponent<Building>();
+                newBuilding.inintilize(t);
+
+                _activeBuildings.Add(newBuilding);
+            }
         }
     }
 

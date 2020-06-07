@@ -8,6 +8,8 @@ public class Building : MonoBehaviour {
 
     public enum BuildingTypes { Empty, Fishery, Lumberjack, Sawmill, SheepFarm, Knitters, PotatoFarm, Distillery };
 
+    private GameManager _GM;
+
     #region Attributes
     public BuildingTypes _type; //The type of the building
     public int _upkeep; //The money cost per minute
@@ -33,30 +35,63 @@ public class Building : MonoBehaviour {
     }
 
     private float timer;
-    private float econTimer;
     private float resTimer;
 
     void Awake(){
-        //subtract buildcostmoney and buildcostplanks 
+        _GM = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
+    public void inintilize(Tile parentTile)
+    {
+        _tile = parentTile;
+        this.calculateEfficiency();
+    }
+
+    private void calculateEfficiency()
+    {
+        if (_minMaxNeighbors.Length == 0)
+        {
+            // no efficiency scaling -> always 1
+            this.efficiencyValue = 1;
+            return;
+        }
+
+        int tileCount = 0;
+
+        foreach (Tile t in _tile._neighborTiles)
+        {
+            if (t._type == _efficiencyScalesWithNeighboringTiles) { tileCount++; }
+        }
+
+        int range = _minMaxNeighbors[1] - _minMaxNeighbors[0];
+        int posInRange = tileCount - _minMaxNeighbors[0];
+
+        if (posInRange <= 0)
+        {
+            this.efficiencyValue = 0;
+        }
+        else
+        {
+            this.efficiencyValue = (float) posInRange / range;
+        }
     }
 
     void Update(){
         timer = Time.deltaTime;
 
-        econTimer += timer;
-
         resTimer += timer * efficiencyValue;
 
         if (resTimer >= resourceGenerationInterval){
             //add output to warehouse
+            _GM.putResourceInWarehouse(_outputResource, _outputCount);
+            
             //get input from warehouse
-            resTimer = 0;
-        }
+            foreach (ResourceTypes r in _inputResources)
+            {
+                _GM.removeResourceFromWarehouse(r, 1);
+            }
 
-        if (econTimer >= 60){
-            //subtract upkeep from GM
-            //money is not implement in the GM tho
-            econTimer = 0;
+            resTimer = 0;
         }
     }
 }

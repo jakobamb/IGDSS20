@@ -59,7 +59,7 @@ public class MouseManager : MonoBehaviour
                 Tile hitTile = hitGameObj.GetComponent<Tile>();
 
                 if (hitTile != null) {
-                    Debug.Log("Tile clicked");
+                    gameManager.TileClicked(hitTile);
                 }
                 
                 Debug.Log(hitGameObj);
