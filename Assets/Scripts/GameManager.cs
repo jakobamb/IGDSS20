@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     #region Buildings
     public GameObject[] _buildingPrefabs; //References to the building prefabs
     public int _selectedBuildingPrefabIndex = 0; //The current index used for choosing a prefab to spawn from the _buildingPrefabs list
-    private List<ProductionBuilding> _activeBuildings = new List<ProductionBuilding>();
+    private List<Building> _activeBuildings = new List<Building>();
     #endregion
 
 
@@ -153,7 +153,7 @@ public class GameManager : MonoBehaviour
         _money += _moneyIncome;
 
         // collect upkeep costs from each building
-        foreach (ProductionBuilding b in _activeBuildings)
+        foreach (Building b in _activeBuildings)
         {
             _money -= b._upkeep;
         }
@@ -195,7 +195,7 @@ public class GameManager : MonoBehaviour
         //if there is building prefab for the number input
         if (_selectedBuildingPrefabIndex < _buildingPrefabs.Length)
         {
-            ProductionBuilding b = _buildingPrefabs[_selectedBuildingPrefabIndex].GetComponent<ProductionBuilding>();
+            Building b = _buildingPrefabs[_selectedBuildingPrefabIndex].GetComponent<Building>();
 
             //check if resources are available
             if (_resourcesInWarehouse[ResourceTypes.Planks] < b._buildCostPlanks)
@@ -221,7 +221,7 @@ public class GameManager : MonoBehaviour
                 // instantiate and place
                 GameObject instance = Instantiate(b.gameObject, t.transform.position, t.transform.rotation);
                 // set parent tile
-                ProductionBuilding newBuilding = instance.GetComponent<ProductionBuilding>();
+                Building newBuilding = instance.GetComponent<Building>();
                 newBuilding.Inintilize(t);
 
                 _activeBuildings.Add(newBuilding);

@@ -60,7 +60,6 @@ public class ProductionBuilding : Building {
         base.Start();
     }
 
-
     void Update(){
         timer = Time.deltaTime;
         resTimer += timer * efficiencyValue;
