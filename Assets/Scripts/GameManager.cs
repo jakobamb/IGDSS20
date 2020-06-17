@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private float _moneyIncome = 100;
+    private float _perWorkerIncome = 5;
 
     private float _econTickTimer = 0;
     public const float _ECON_TICK_INTERVAL = 5;
@@ -151,10 +152,13 @@ public class GameManager : MonoBehaviour
     {
         // add constant amount of money each tick
         _money += _moneyIncome;
-
-        // collect upkeep costs from each building
+        
         foreach (Building b in _activeBuildings)
         {
+            // add amount for each living worker
+            _money += b._workers.Count * _perWorkerIncome;
+
+            // collect upkeep costs from each building
             _money -= b._upkeep;
         }
     }
