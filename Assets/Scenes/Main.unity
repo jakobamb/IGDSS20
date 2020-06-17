@@ -2065,15 +2065,16 @@ MonoBehaviour:
   - {fileID: 5089356816932052806, guid: 941d5727e2438483d806df17840eb0b3, type: 3}
   - {fileID: 6804855411098784632, guid: 7d993928ccef740ca9df487b6c38fe6c, type: 3}
   - {fileID: 4419599609530174819, guid: 883d737f65a594aedbb591ae5c48999b, type: 3}
+  - {fileID: 3842935380546968148, guid: 12682b6e29e209043a45c0a4f9dbe557, type: 3}
   _selectedBuildingPrefabIndex: 0
-  _ResourcesInWarehouse_Fish: 0
-  _ResourcesInWarehouse_Wood: 0
-  _ResourcesInWarehouse_Planks: 0
-  _ResourcesInWarehouse_Wool: 0
-  _ResourcesInWarehouse_Clothes: 0
-  _ResourcesInWarehouse_Potato: 0
-  _ResourcesInWarehouse_Schnapps: 0
-  _money: 0
+  _ResourcesInWarehouse_Fish: 500
+  _ResourcesInWarehouse_Wood: 500
+  _ResourcesInWarehouse_Planks: 500
+  _ResourcesInWarehouse_Wool: 500
+  _ResourcesInWarehouse_Clothes: 500
+  _ResourcesInWarehouse_Potato: 500
+  _ResourcesInWarehouse_Schnapps: 500
+  _money: 500
   _moneyIncome: 100
 --- !u!4 &1768092942
 Transform:
