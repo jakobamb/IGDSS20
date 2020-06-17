@@ -11,16 +11,35 @@ public class Worker : MonoBehaviour
 
     public float _age; // The age of this worker
     public float _happiness; // The happiness of this worker
+    private float lifeCycleStep;
+    private float resCycleStep;
+    public bool _hasJob;
+    public bool _hasFish;
+    public bool _hasClothes;
+    public bool _hasSchnapps;
 
     // Start is called before the first frame update
     void Start()
     {
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _jobManager = GameObject.Find("JobManager").GetComponent<JobManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Age();
+        lifeCycleStep += Time.deltaTime;
+        resCycleStep += Time.deltaTime;
+
+        if(lifeCycleStep >= 15){
+            Age();
+            lifeCycleStep = 0;
+        }
+        if(lifeCycleStep >= 60){
+            consumeRes();
+            resCycleStep = 0;
+        }
+        happinessUpdate();
     }
 
 
@@ -30,20 +49,21 @@ public class Worker : MonoBehaviour
         //When becoming of age, the worker enters the job market, and leaves it when retiring.
         //Eventually, the worker dies and leaves an empty space in his home. His Job occupation is also freed up.
 
-        if (_age > 14)
-        {
-            BecomeOfAge();
-        }
+            _age++;
+            if (_age > 14f && _age <= 64f)
+            {
+                BecomeOfAge();
+            }
 
-        if (_age > 64)
-        {
-            Retire();
-        }
+            if (_age > 64f && _age <= 100f)
+            {
+                Retire();
+            }
 
-        if (_age > 100)
-        {
-            Die();
-        }
+            if (_age > 100f)
+            {
+                Die();
+            }
     }
 
 
@@ -60,5 +80,46 @@ public class Worker : MonoBehaviour
     private void Die()
     {
         Destroy(this.gameObject, 1f);
+    }
+
+    private void consumeRes() {
+        if(_gameManager.HasResourceInWarehouse(GameManager.ResourceTypes.Fish)){
+            _gameManager.removeResourceFromWarehouse(GameManager.ResourceTypes.Fish,1);
+            _hasFish = true;
+        }
+        else{
+            _hasFish = false;
+        }
+        if (_gameManager.HasResourceInWarehouse(GameManager.ResourceTypes.Clothes)){
+            _gameManager.removeResourceFromWarehouse(GameManager.ResourceTypes.Clothes,1);
+            _hasClothes = true;
+        }
+        else{
+            _hasClothes = false;
+        }
+
+        if (_gameManager.HasResourceInWarehouse(GameManager.ResourceTypes.Schnapps)){
+            _gameManager.removeResourceFromWarehouse(GameManager.ResourceTypes.Schnapps,1);
+            _hasSchnapps = true;
+        }
+        else{
+            _hasSchnapps = false;
+        }
+    }
+
+    private void happinessUpdate() {
+        _happiness = 0;
+        if(_hasJob || _age <= 14f){
+            _happiness += 0.5f;
+        }
+        if(_hasFish){
+            _happiness += 0.2f;
+        }
+        if(_hasClothes){
+            _happiness += 0.2f;
+        }
+        if(_hasSchnapps){
+            _happiness += 0.1f;
+        }
     }
 }
