@@ -105,18 +105,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1353584664716046620}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 734479c5f250a5b4e81184fd94a3bcca, type: 3}
+  m_Script: {fileID: 11500000, guid: 70fd8b116db5e234a88c99ff6d1487db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _type: 2
+  _type: 0
   _upkeep: 10
   _buildCostMoney: 100
   _buildCostPlanks: 0
   _tile: {fileID: 0}
-  efficiencyValue: 1
+  _canBeBuiltOnTileTypes: 04000000
+  _workers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  efficiencyValue: 0
   resourceGenerationInterval: 15
   _outputCount: 1
-  _canBeBuiltOnTileTypes: 04000000
   _efficiencyScalesWithNeighboringTiles: 4
   _minMaxNeighbors: 0100000006000000
   _inputResources: 
