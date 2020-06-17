@@ -222,7 +222,7 @@ public class GameManager : MonoBehaviour
                 GameObject instance = Instantiate(b.gameObject, t.transform.position, t.transform.rotation);
                 // set parent tile
                 ProductionBuilding newBuilding = instance.GetComponent<ProductionBuilding>();
-                newBuilding.inintilize(t);
+                newBuilding.Inintilize(t);
 
                 _activeBuildings.Add(newBuilding);
             }
