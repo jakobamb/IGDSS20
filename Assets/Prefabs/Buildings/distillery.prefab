@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70fd8b116db5e234a88c99ff6d1487db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _type: 0
+  _type: 7
   _upkeep: 40
   _buildCostMoney: 100
   _buildCostPlanks: 2

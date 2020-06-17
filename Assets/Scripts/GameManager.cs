@@ -160,7 +160,7 @@ public class GameManager : MonoBehaviour
     }
 
     //Checks if there is at least one material for the queried resource type in the warehouse
-    public bool HasResourceInWarehoues(ResourceTypes resource)
+    public bool HasResourceInWarehouse(ResourceTypes resource)
     {
         return _resourcesInWarehouse[resource] >= 1;
     }
