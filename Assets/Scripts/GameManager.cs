@@ -258,7 +258,6 @@ public class GameManager : MonoBehaviour
             {
                 Tile t = _tileMap[h, w];
                 t._neighborTiles = FindNeighborsOfTile(t);
-
             }
         }
     }
@@ -277,11 +276,17 @@ public class GameManager : MonoBehaviour
         if (height > 0)
         {
             result.Add(_tileMap[height - 1, width]);
+            if(result[result.Count-1]._type == t._type){
+                t._topEdge.SetActive(false); 
+            }
         }
         //bottom
         if (height < _heightMap.height - 1)
         {
             result.Add(_tileMap[height + 1, width]);
+            if(result[result.Count-1]._type == t._type){
+                t._bottomEdge.SetActive(false);
+            }
         }
         //left
         if (width > 0)

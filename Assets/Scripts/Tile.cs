@@ -13,6 +13,16 @@ public class Tile : MonoBehaviour
     public int _coordinateWidth; //The coordinate on the x-axis on the tile grid (not world coordinates)
     #endregion
 
+    #region Edges
+    public GameObject _topEdge;
+    public GameObject _topRightEdge;
+    public GameObject _bottomRightEdge;
+    public GameObject _bottomEdge;
+    public GameObject _bottomLeftEdge;
+    public GameObject _topLeftEdge;
+    #endregion
+
+
     #region Enumerations
     public enum TileTypes { Empty, Water, Sand, Grass, Forest, Stone, Mountain }; //Enumeration of all available tile types. Can be addressed from other scripts by calling Tile.Tiletypes
     #endregion
