@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -42,6 +44,11 @@ public class GameManager : MonoBehaviour
     public int _maximumResourceCountInWarehouse = 100; //How much of each resource can be stored in the global warehouse
     private Dictionary<ResourceTypes, float> _resourcesInWarehouse = new Dictionary<ResourceTypes, float>(); //Holds a number of stored resources for every ResourceType
 
+    public Canvas PopUp; 
+    public Text PopUpText;
+
+    private bool _isGameOver = false;
+    
 
     //A representation of _resourcesInWarehouse, broken into individual floats. Only for display in inspector, will be removed and replaced with UI later
     [SerializeField]
@@ -91,14 +98,18 @@ public class GameManager : MonoBehaviour
         AddResourceToWarehouse(ResourceTypes.Planks, 20);
 
         SetMapDimensions();
+        PopUp.enabled = false;
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        HandleKeyboardInput();
-        UpdateEconomyTimer();
-        UpdateInspectorNumbersForResources();
+    void Update(){
+        //_money -= 1000;
+        //Debug.Log(_money);
+        if(_isGameOver==false){
+            HandleKeyboardInput();
+            UpdateEconomyTimer();
+            UpdateInspectorNumbersForResources();
+        }
     }
     #endregion
 
@@ -121,6 +132,13 @@ public class GameManager : MonoBehaviour
         {
             _economyTimer = 0;
             TickEconomy();
+        }
+
+        if (_money > 1000000 || _population > 1000){
+            WinGame();
+        }
+        if(_money < 0){
+            LoseGame();
         }
     }
 
@@ -412,4 +430,20 @@ public class GameManager : MonoBehaviour
         NavigationManager.Instance.SetDimensions(_tileMap.GetLength(0), _tileMap.GetLength(1));
     }
     #endregion
+
+    private void WinGame(){
+        PopUpText.text = "YOU WON!";
+        PopUp.enabled = true;
+        _isGameOver = true;
+    }
+
+    private void LoseGame(){
+        PopUpText.text = "YOU LOST!";
+        PopUp.enabled = true;
+        _isGameOver = true;
+    }
+
+    public void Restart(){
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }
