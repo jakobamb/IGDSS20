@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MouseManager : MonoBehaviour
 {
@@ -61,8 +62,17 @@ public class MouseManager : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 1000f, layerMask))
             {
                 //Debug.Log("You selected the " + hit.collider.name);
-                Tile t = hit.collider.GetComponent<Tile>();
-                _gameManager.TileClicked(t._coordinateHeight, t._coordinateWidth);
+
+                // Check if the mouse was clicked over a UI element
+                if (EventSystem.current.IsPointerOverGameObject())
+                {
+                    Debug.Log("Clicked on the UI");
+                } 
+                else
+                {
+                    Tile t = hit.collider.GetComponent<Tile>();
+                    _gameManager.TileClicked(t._coordinateHeight, t._coordinateWidth);
+                }
             }
         }
     }
