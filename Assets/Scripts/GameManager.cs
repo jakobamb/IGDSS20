@@ -19,6 +19,24 @@ public class GameManager : MonoBehaviour
     private float _heightFactor = 50; //Multiplier for placement of tiles on the Y-axis
     #endregion
 
+    #region UI
+
+    // economy
+    public Text _MoneyText;
+    public Text _WorkerText;
+
+    // resources
+
+
+    #endregion
+    public Text _InvTxtFish;
+    public Text _InvTxtWood;
+    public Text _InvTxtPlanks;
+    public Text _InvTxtWool;
+    public Text _InvTxtClothes;
+    public Text _InvTxtPotato;
+    public Text _InvTxtSchnapps;
+
     #region Buildings
     public GameObject[] _buildingPrefabs; //References to the building prefabs
     public Transform _buildingParentObject; //Reference to the parent object in the hierarchy for all spawned buildings
@@ -102,18 +120,34 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update(){
-        //_money -= 1000;
-        //Debug.Log(_money);
-        if(_isGameOver==false){
-            HandleKeyboardInput();
-            UpdateEconomyTimer();
-            UpdateInspectorNumbersForResources();
-        }
+    void Update()
+    {
+        HandleKeyboardInput();
+        UpdateEconomyTimer();
+        UpdateInspectorNumbersForResources();
+        UpdateUI();
     }
     #endregion
 
     #region Methods
+
+    // Update UI Elements
+    void UpdateUI()
+    {
+        // economy
+        _WorkerText.text = _population.ToString();
+        _MoneyText.text = _money.ToString();
+
+        // inventory
+        _InvTxtFish.text = _resourcesInWarehouse[ResourceTypes.Fish].ToString();
+        _InvTxtWood.text = _resourcesInWarehouse[ResourceTypes.Wood].ToString();
+        _InvTxtPlanks.text = _resourcesInWarehouse[ResourceTypes.Planks].ToString();
+        _InvTxtWool.text = _resourcesInWarehouse[ResourceTypes.Wool].ToString();
+        _InvTxtClothes.text = _resourcesInWarehouse[ResourceTypes.Clothes].ToString();
+        _InvTxtPotato.text = _resourcesInWarehouse[ResourceTypes.Potato].ToString();
+        _InvTxtSchnapps.text = _resourcesInWarehouse[ResourceTypes.Schnapps].ToString();
+    }
+
     //Makes the resource dictionary usable by populating the values and keys
     void PopulateResourceDictionary()
     {
@@ -185,6 +219,11 @@ public class GameManager : MonoBehaviour
         {
             _selectedBuildingPrefabIndex = 9;
         }
+    }
+
+    public void buildingUIBtnClicked(int btnId)
+    {
+        _selectedBuildingPrefabIndex = btnId;
     }
 
     //Updates the visual representation of the resource dictionary in the inspector. Only for debugging
