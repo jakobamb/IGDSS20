@@ -14,12 +14,12 @@ public class Tile : MonoBehaviour
     #endregion
 
     #region Edges
-    public GameObject _topEdge;
+    public GameObject _topLeftEdge;
     public GameObject _topRightEdge;
     public GameObject _bottomRightEdge;
-    public GameObject _bottomEdge;
     public GameObject _bottomLeftEdge;
-    public GameObject _topLeftEdge;
+    public GameObject _leftEdge;
+    public GameObject _rightEdge;
     #endregion
 
 
