@@ -297,7 +297,6 @@ public class GameManager : MonoBehaviour
             {
                 Tile t = _tileMap[h, w];
                 t._neighborTiles = FindNeighborsOfTile(t);
-
             }
         }
     }
@@ -316,21 +315,35 @@ public class GameManager : MonoBehaviour
         if (height > 0)
         {
             result.Add(_tileMap[height - 1, width]);
+            if(result[result.Count-1]._type == t._type){
+                t._topRightEdge.SetActive(false);
+                t._topLeftEdge.SetActive(false);
+            }
         }
         //bottom
         if (height < _heightMap.height - 1)
         {
             result.Add(_tileMap[height + 1, width]);
+            if(result[result.Count-1]._type == t._type){
+                t._bottomRightEdge.SetActive(false);
+                t._bottomLeftEdge.SetActive(false);
+            }
         }
         //left
         if (width > 0)
         {
             result.Add(_tileMap[height, width - 1]);
+            if(result[result.Count-1]._type == t._type){
+                t._leftEdge.SetActive(false);
+            }
         }
         //right
         if (width < _heightMap.width - 1)
         {
             result.Add(_tileMap[height, width + 1]);
+            if(result[result.Count-1]._type == t._type){
+                t._rightEdge.SetActive(false);
+            }
         }
 
         //if the column is even
@@ -340,10 +353,28 @@ public class GameManager : MonoBehaviour
             if (height > 0 && width > 0)
             {
                 result.Add(_tileMap[height - 1, width - 1]);
+                if(result[result.Count-1]._type == t._type){
+                    t._topLeftEdge.SetActive(false);
+                }
+                else{
+                    t._topLeftEdge.SetActive(true);
+                }
+            }
+            else{
+                t._topLeftEdge.SetActive(true);
             }
             if (height < _heightMap.height - 1 && width > 0)
             {
                 result.Add(_tileMap[height + 1, width - 1]);
+                if(result[result.Count-1]._type == t._type){
+                    t._bottomLeftEdge.SetActive(false);
+                }
+                else{
+                    t._bottomLeftEdge.SetActive(true);
+                }
+            }
+            else{
+                t._bottomLeftEdge.SetActive(true);
             }
         }
         //if the column is uneven
@@ -353,10 +384,28 @@ public class GameManager : MonoBehaviour
             if (height > 0 && width < _heightMap.width - 1)
             {
                 result.Add(_tileMap[height - 1, width + 1]);
+                if(result[result.Count-1]._type == t._type){
+                    t._topRightEdge.SetActive(false);
+                }
+                else{
+                    t._topRightEdge.SetActive(true);
+                }
+            }
+            else{
+                t._topRightEdge.SetActive(true);
             }
             if (height < _heightMap.height - 1 && width < _heightMap.width - 1)
             {
                 result.Add(_tileMap[height + 1, width + 1]);
+                if(result[result.Count-1]._type == t._type){
+                    t._bottomRightEdge.SetActive(false);
+                }
+                else{
+                    t._bottomRightEdge.SetActive(true);
+                }
+            }
+            else{
+                t._bottomRightEdge.SetActive(true);
             }
         }
 
